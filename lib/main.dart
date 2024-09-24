@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_github_repositories/screen/home_screen.dart';
+import 'package:flutter_github_repositories/view/home_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
