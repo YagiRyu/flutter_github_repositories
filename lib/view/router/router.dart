@@ -1,48 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_github_repositories/domain/model/github_domain_model.dart';
-import 'package:flutter_github_repositories/view/screen/detail/detail_screen.dart';
+import 'package:flutter_github_repositories/view/router/branch/home_screen_branch.dart';
+import 'package:flutter_github_repositories/view/router/branch/profile_screen_branch.dart';
 import 'package:flutter_github_repositories/view/screen/error/error_screen.dart';
-import 'package:flutter_github_repositories/view/screen/home/home_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
 @riverpod
 GoRouter router(RouterRef ref) => GoRouter(
     routes: $appRoutes,
+    navigatorKey: _rootNavigatorKey,
     errorBuilder: (BuildContext context, GoRouterState state) {
       return ErrorRoute(error: state.error!).build(context, state);
     });
 
-@TypedGoRoute<HomeScreenRoute>(
-  path: HomeScreenRoute.path,
-  routes: [
-    TypedGoRoute<DetailScreenRoute>(
-      path: DetailScreenRoute.path,
-    ),
+@TypedStatefulShellRoute<MainShellRouteData>(
+  branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
+    homeStatefulShellBranch,
+    profileStatefulShellBranch,
   ],
 )
-class HomeScreenRoute extends GoRouteData {
-  const HomeScreenRoute();
-
-  static const path = "/";
+class MainShellRouteData extends StatefulShellRouteData {
+  const MainShellRouteData();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const HomeScreen();
+  Widget builder(BuildContext context, GoRouterState state,
+      StatefulNavigationShell navigationShell) {
+    return BottomNavigationBar(navigationShell: navigationShell);
   }
 }
 
-class DetailScreenRoute extends GoRouteData {
-  const DetailScreenRoute(this.$extra);
-  final RepositoryDomainModel $extra;
+class BottomNavigationBar extends StatelessWidget {
+  const BottomNavigationBar({
+    super.key,
+    required this.navigationShell,
+  });
 
-  static const path = "detail";
+  final StatefulNavigationShell navigationShell;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return DetailScreen(repository: $extra);
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            label: "home",
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
+        onDestinationSelected: _goBranch,
+      ),
+    );
+  }
+
+  void _goBranch(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
   }
 }
 

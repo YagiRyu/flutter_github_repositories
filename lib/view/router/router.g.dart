@@ -7,19 +7,41 @@ part of 'router.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-      $homeScreenRoute,
+      $mainShellRouteData,
     ];
 
-RouteBase get $homeScreenRoute => GoRouteData.$route(
-      path: '/',
-      factory: $HomeScreenRouteExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: 'detail',
-          factory: $DetailScreenRouteExtension._fromState,
+RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
+      factory: $MainShellRouteDataExtension._fromState,
+      branches: [
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/',
+              factory: $HomeScreenRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'detail',
+                  factory: $DetailScreenRouteExtension._fromState,
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/profile',
+              factory: $ProfileScreenRouteExtension._fromState,
+            ),
+          ],
         ),
       ],
     );
+
+extension $MainShellRouteDataExtension on MainShellRouteData {
+  static MainShellRouteData _fromState(GoRouterState state) =>
+      const MainShellRouteData();
+}
 
 extension $HomeScreenRouteExtension on HomeScreenRoute {
   static HomeScreenRoute _fromState(GoRouterState state) =>
@@ -60,11 +82,29 @@ extension $DetailScreenRouteExtension on DetailScreenRoute {
       context.replace(location, extra: $extra);
 }
 
+extension $ProfileScreenRouteExtension on ProfileScreenRoute {
+  static ProfileScreenRoute _fromState(GoRouterState state) =>
+      const ProfileScreenRoute();
+
+  String get location => GoRouteData.$location(
+        '/profile',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerHash() => r'b0c985822fc2ef982b4d93881a161067b0b1e63b';
+String _$routerHash() => r'a4e82f403e0299b11cef74fad9f592e5b619584b';
 
 /// See also [router].
 @ProviderFor(router)
