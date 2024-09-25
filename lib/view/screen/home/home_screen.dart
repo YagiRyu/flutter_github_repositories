@@ -53,7 +53,7 @@ class HomeScreen extends ConsumerWidget {
 Future<void> _showMyDialog(BuildContext context) async {
   return showDialog<void>(
     context: context,
-    barrierDismissible: false, // user must tap button!
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return const AlertDialog(
         content: Center(
