@@ -14,7 +14,7 @@ class ItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(repository.name),
-      onTap: () async => const DetailScreenRoute().go(context),
+      onTap: () async => DetailScreenRoute(repository).go(context),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_github_repositories/domain/model/github_domain_model.dart';
 import 'package:flutter_github_repositories/view/screen/detail/detail_screen.dart';
 import 'package:flutter_github_repositories/view/screen/error/error_screen.dart';
 import 'package:flutter_github_repositories/view/screen/home/home_screen.dart';
@@ -34,13 +35,14 @@ class HomeScreenRoute extends GoRouteData {
 }
 
 class DetailScreenRoute extends GoRouteData {
-  const DetailScreenRoute();
+  const DetailScreenRoute(this.$extra);
+  final RepositoryDomainModel $extra;
 
   static const path = "detail";
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const DetailScreen();
+    return DetailScreen(repository: $extra);
   }
 }
 

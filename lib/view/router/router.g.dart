@@ -40,21 +40,24 @@ extension $HomeScreenRouteExtension on HomeScreenRoute {
 }
 
 extension $DetailScreenRouteExtension on DetailScreenRoute {
-  static DetailScreenRoute _fromState(GoRouterState state) =>
-      const DetailScreenRoute();
+  static DetailScreenRoute _fromState(GoRouterState state) => DetailScreenRoute(
+        state.extra as RepositoryDomainModel,
+      );
 
   String get location => GoRouteData.$location(
         '/detail',
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 // **************************************************************************
