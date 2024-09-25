@@ -12,7 +12,6 @@ class GitHubRepositoryImpl implements GitHubRepository {
   Future<GitHubDomainModel> fetchRepositories(String language) async {
     try {
       final response = await _apiClient.fetchRepositories(language);
-      print(response.mapToDomainModel());
       return response.mapToDomainModel();
     } on Exception catch (_) {
       rethrow;

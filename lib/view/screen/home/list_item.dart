@@ -14,7 +14,18 @@ class ItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(repository.name),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(
+          repository.owner.avatarUrl,
+        ),
+      ),
+      title: Text(
+        repository.name,
+        style: const TextStyle(
+          fontSize: 20,
+        ),
+      ),
+      subtitle: Text(repository.owner.ownerName),
       onTap: () async => DetailScreenRoute(repository).go(context),
     );
   }

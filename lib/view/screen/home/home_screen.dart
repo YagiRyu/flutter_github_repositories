@@ -27,6 +27,16 @@ class HomeScreen extends ConsumerWidget {
     return state.when(
       data: (data) {
         return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              "Repositories!!!",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+            backgroundColor: Colors.blue,
+          ),
           body: RefreshIndicator(
             onRefresh: refresh,
             child: HomeScreenList(
