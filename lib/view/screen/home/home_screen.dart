@@ -24,38 +24,38 @@ class HomeScreen extends ConsumerWidget {
           .fetchRepositories("Kotlin");
     }
 
-    return state.when(
-      data: (data) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              "Repositories!!!",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
-            ),
-            backgroundColor: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Repositories!!!",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
           ),
-          body: RefreshIndicator(
+        ),
+        backgroundColor: Colors.blue,
+      ),
+      body: state.when(
+        data: (data) {
+          return RefreshIndicator(
             onRefresh: refresh,
             child: HomeScreenList(
               itemCount: data.repositories.length,
               repositories: data.repositories,
             ),
-          ),
-        );
-      },
-      error: (_, __) {
-        return const SizedBox.shrink();
-      },
-      loading: () {
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
+          );
+        },
+        error: (_, __) {
+          return const SizedBox.shrink();
+        },
+        loading: () {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
